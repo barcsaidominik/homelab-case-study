@@ -1,6 +1,6 @@
 # Architecture decision records
 
-> **Draft.** Planned records; each one follows [the template](template.md).
+Each record follows [the template](template.md).
 
 | # | Decision | Status |
 |---|---|---|
@@ -13,4 +13,4 @@
 | [ADR-007](007-per-service-accounts.md) | Per-service non-admin accounts; virtual service account for the monitor | accepted |
 | [ADR-008](008-no-llm-in-operations.md) | No LLM in operations: deterministic, rule-based monitoring | accepted |
 | [ADR-009](009-narrow-notifications-and-heartbeat.md) | Narrow push notifications + external dead man's switch; everything else in the log | accepted |
-| ADR-010 | Register of accepted risks | planned |
+| [ADR-010](010-accepted-risks.md) | Register of accepted risks | accepted |
