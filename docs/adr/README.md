@@ -10,7 +10,7 @@
 | [ADR-004](004-offsite-without-stored-credentials.md) | Offsite copy: manual weekly upload, no cloud credentials stored on the host | accepted |
 | [ADR-005](005-unattended-startup-without-autologon.md) | Unattended startup with scheduled tasks and a storage-readiness gate; AutoLogon rejected | accepted |
 | [ADR-006](006-internal-subzone-and-dns01.md) | Internal DNS subzone and ACME DNS-01 certificates with a single-zone token | accepted |
-| ADR-007 | Per-service non-admin accounts; virtual service account for the monitor | planned |
-| ADR-008 | No LLM in operations: deterministic, rule-based monitoring | planned |
-| ADR-009 | Narrow push notifications + external dead man's switch; everything else in the log | planned |
+| [ADR-007](007-per-service-accounts.md) | Per-service non-admin accounts; virtual service account for the monitor | accepted |
+| [ADR-008](008-no-llm-in-operations.md) | No LLM in operations: deterministic, rule-based monitoring | accepted |
+| [ADR-009](009-narrow-notifications-and-heartbeat.md) | Narrow push notifications + external dead man's switch; everything else in the log | accepted |
 | ADR-010 | Register of accepted risks | planned |
