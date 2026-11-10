@@ -1,7 +1,7 @@
 # ADR-009: Narrow push notifications + external dead man's switch; everything else in the log
 
-- **Status:** accepted (replaces "alerts only in the central log, passive")
-- **Date:** 2026-11-02
+- **Status:** accepted (replaces "alerts only in the central log, passive"); notifications live since 2026-11-10
+- **Date:** 2026-11-02, updated 2026-11-10
 - **Decided by:** me
 
 ## Context
@@ -26,7 +26,8 @@ Option 3.
   read from a file and never logged). It reaches the phone at night as well.
 - **Critical, and only these:** a family-facing service is unreachable, local DNS is down, no successful backup for
   26 hours, a security indicator of compromise in a media server's logs, low disk space or a worsening disk health
-  value. Everything else stays in the log and in the daily report.
+  value, and (added after the shadow week) both fans stopped at a high CPU temperature with the fan controller's
+  recovery attempts failed. Everything else stays in the log and in the daily report.
 - **Safeguards:** at most six messages an hour; a storm (more than three critical incidents within ten minutes)
   becomes one digest; one reminder after six hours for outages, a daily reminder for backup and disk problems; an
   incident that recovers sends one "recovered" message; nothing is sent during maintenance windows or while an
@@ -44,6 +45,15 @@ Option 3.
 - Shadow mode first: the monitor writes the messages it would send into the outbox without sending them, and they
   are compared with what actually happened; sending is switched on only after that. The heartbeat went live first,
   because it cannot produce false alarms about services.
+- The shadow week found one problem in each direction:
+  - **A false critical.** One app's probe called its status endpoint, and that endpoint asks GitHub for a newer
+    release on every request. During a GitHub outage it took longer than the probe's timeout, so the monitor would
+    have reported the app as down for an hour while it was working. The probe now uses an endpoint with no outside
+    dependency.
+  - **A missing critical.** The fan incident (fans stopped, CPU at 98–100 °C) was only a warning, so it would not
+    have notified even with sending switched on. It is now on the list.
+- Live test right after switching on: one family-facing app was stopped for four minutes. The critical notification
+  arrived on the phone half a minute after the incident opened, and the "recovered" message followed the restart.
 
 ## Consequences
 

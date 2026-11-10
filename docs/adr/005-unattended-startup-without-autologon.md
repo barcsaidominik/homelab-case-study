@@ -48,7 +48,7 @@ Option 3.
   Baseline before the change, signed in: 44/44. After the change: three reboots without signing in, 53/53 at the end.
 - The same script runs after every planned reboot since then.
 - Later, when the services moved to their own non-admin accounts ([ADR-007](007-per-service-accounts.md)), the same
-  test proved that nothing regressed (70/0 after the reboot).
+  test proved that nothing regressed (71/0 after the reboot).
 
 ## Consequences
 

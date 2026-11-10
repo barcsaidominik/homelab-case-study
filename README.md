@@ -23,8 +23,8 @@ Related code:
 - **Users who are not technical** and must not notice maintenance.
 - **One operator with a day job.** That is me, so everything has to work without me watching it.
 
-One constraint shaped most of the decisions: **nothing may depend on someone being signed in.** The machine reboots by
-itself after updates, and everything has to come back on its own.
+One constraint shaped most of the decisions: **nothing may depend on someone being signed in.** Windows Update is allowed
+to reboot the machine at night, and everything has to come back on its own.
 
 ## Architecture
 
@@ -128,7 +128,9 @@ scheduled script. Both feed an **incident state machine** with hysteresis, depen
 and maintenance windows. When DNS fails, the result is one incident with the affected services listed, not five alerts.
 
 Only a short, explicit list of critical events sends a push notification. A dead man's switch at healthchecks.io covers
-the case where the monitor or the whole machine is gone. The monitor runs in shadow mode before it sends anything
+the case where the monitor or the whole machine is gone. The monitor ran in shadow mode for a week before it sent
+anything. That week found one false critical (a probe that depended on GitHub being up) and one missing critical (the
+fan incident below). Both were fixed, notifications were switched on, and a live test confirmed the whole chain
 ([ADR-009](docs/adr/009-narrow-notifications-and-heartbeat.md)).
 
 I evaluated an LLM-based "AI operator" and rejected it for concrete reasons: privacy, the admin access it would need,
@@ -153,8 +155,11 @@ and a GPU that is already busy with transcoding ([ADR-008](docs/adr/008-no-llm-i
 **Fans at 0 RPM after an unattended reboot.**
 
 - *Timeline:* After several reboots without anyone signing in, the CPU reached 98–100 °C while the fans stood at
-  0 RPM. The monitor opened an incident for it. Notifications were still off, so I saw it in the log, not on my phone.
-- *Wrong first hypothesis:* a hardware fault. The fans spun up to about 6,000 RPM immediately when set to maximum by hand.
+  0 RPM. The monitor opened an incident for it, and I saw it in the log, not on my phone. Notifications were still
+  in shadow mode, but the shadow week showed that this incident was only a warning, so it would not have notified
+  me even with sending switched on. It is a critical, notifying check now.
+- *Wrong first hypothesis:* a hardware or cooling fault. I cleaned the fans and reset the embedded controller, and after
+  the next boot without anyone signing in they still stood at 0 RPM. They started as soon as I signed in.
 - *Root cause:* on this laptop the fan curve comes from the vendor's desktop app, and that app runs only in a signed-in
   session. Without it, the embedded controller leaves the fans stopped.
 - *Fix:* a fallback fan controller writes the fan level through the firmware's WMI interface, but only when the vendor
