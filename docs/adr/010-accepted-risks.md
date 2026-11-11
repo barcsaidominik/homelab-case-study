@@ -1,7 +1,7 @@
 # ADR-010: Register of accepted risks
 
 - **Status:** accepted, reviewed when something in the setup changes
-- **Date:** 2026-10-21 (started), last updated 2026-11-06
+- **Date:** 2026-10-21 (started), last updated 2026-11-11
 - **Decided by:** me, one entry at a time; the assistant points out the risk, I decide whether to fix or accept it
 
 ## Context
@@ -19,7 +19,7 @@ its reopening condition is met.
 
 | Risk | Why it is accepted | What limits it | Reopen when |
 |---|---|---|---|
-| Container ports listen on all interfaces, so the reverse proxy can be bypassed on the LAN | Several devices reach services only by IP and port | Host firewall: LAN and VPN only, nothing exposed to the internet | A device that needs IP:port goes away, or a service gets internet exposure |
+| Container ports listen on all interfaces, so the reverse proxy can be bypassed on the LAN | Several devices reach services only by IP and port | Host firewall: LAN and VPN only; the single exception is the media server's remote-access port | A device that needs IP:port goes away, or a service gets internet exposure |
 | The central log accepts events without authentication | Every script and app would need its own key | Web UI needs a login; reading needs a read-only key; reachable from the LAN and VPN only | Anything outside the host needs to send logs |
 | The monitor's and a local app's read-only APIs have no authentication | They return aggregates the dashboard needs; a key in the dashboard config would not add protection | GET only, no secrets or personal data, LAN and VPN only | An endpoint starts returning anything sensitive |
 | One DNS server: if the host is down, local name resolution is down | A second device for DNS was not wanted at the time | A watchdog restarts the DNS service; DNS is a critical, notifying check; clients can be switched to public DNS by hand (internal names then stop working) | A spare device becomes available (under consideration) |

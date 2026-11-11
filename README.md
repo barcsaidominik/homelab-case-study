@@ -26,7 +26,7 @@ Related code:
 One constraint shaped most of the decisions: **nothing may depend on someone being signed in.** Windows Update is allowed
 to reboot the machine at night, and everything has to come back on its own.
 
-## Architecture
+## Architecture (as of November 2026)
 
 ```mermaid
 flowchart LR
@@ -52,8 +52,9 @@ flowchart LR
     usb -->|weekly, manual| offsite[(Offsite)]
 ```
 
-Nothing is exposed to the internet. Family members outside the house connect through a mesh VPN, and they use the same
-names and certificates as at home.
+Only one port is forwarded from the router: the media server's own remote-access port. Everything else is reachable
+only on the LAN or through a mesh VPN, and family members outside the house use the same names and certificates as at
+home.
 
 ## Case studies
 
@@ -76,6 +77,9 @@ Restores are tested on two levels ([ADR-003](docs/adr/003-restore-testing.md)):
   database copy is checked.
 - **On request:** every service is started from its restored data in an isolated container with no network. The
   first run passed 26 out of 26.
+
+This proves that the data and the services can be restored, not that the whole host can be. The bare-metal rebuild is
+written down step by step, but it has not been tested.
 
 The offsite copy is a manual weekly upload from my desktop. The desktop reads the backup through a read-only share, so
 **the server holds no cloud credentials** that ransomware could use against the offsite copy
@@ -202,3 +206,7 @@ general. The specifics would only be a map for an attacker.
 ## Decision records
 
 See [docs/adr](docs/adr/README.md).
+
+## License
+
+The text of this repository is licensed under [CC BY 4.0](LICENSE): you may share and adapt it with attribution.

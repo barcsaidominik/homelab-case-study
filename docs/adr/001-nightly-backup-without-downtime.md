@@ -45,7 +45,8 @@ disk or the repository is missing; it never creates a target on another drive.
 ## Verification
 
 - The first run and every run since report to the central log (duration, new and changed files, size). A typical
-  night takes under three minutes for about 15 GB of data.
+  night takes under three minutes: in the two weeks to 2026-11-11, the nightly runs took 1.8–3.3 minutes (median about
+  2.5) for 12–16 GB of data.
 - A health check that runs every six hours raises an incident if there was no successful backup in the last 26 hours.
 - The restores are tested, not assumed: see [ADR-003](003-restore-testing.md).
 

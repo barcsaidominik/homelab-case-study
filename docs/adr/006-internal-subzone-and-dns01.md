@@ -22,7 +22,8 @@ mail records. If the server is down, those must still resolve.
 
 For certificates:
 
-1. **HTTP-01 challenges.** Needs inbound port 80 from the internet; nothing on the server is meant to be public.
+1. **HTTP-01 challenges.** Needs inbound port 80 from the internet; the services behind the reverse proxy are not
+   meant to be public.
 2. **DNS-01 challenges through the DNS provider's API.** No inbound ports; needs an API token on the server.
 
 ## Decision
